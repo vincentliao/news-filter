@@ -22,4 +22,7 @@ sheet_url = st.secrets["private_gsheets_url"]
 rows = conn.execute(f'SELECT * FROM "{sheet_url}"', headers=1)
 rows_all = rows.fetchall()
 
+for r in rows_all:
+    st.write(f"{row.date} has a :{row.tag}:")
+
 
