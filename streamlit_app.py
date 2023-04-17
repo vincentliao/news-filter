@@ -18,8 +18,11 @@ def run_query(query):
     rows = rows.fetchall()
     return rows
 
+# Create a text input for filtering the data
+filter_text = st.text_input("Filter", "")
+
 sheet_url = st.secrets["private_gsheets_url"]
-rows = conn.execute(f'SELECT * FROM "{sheet_url}"', headers=1)
+rows = conn.execute(f'SELECT * FROM "{sheet_url}" WHERE tag like "%{filter_text}%"', headers=1)
 rows_all = rows.fetchall()
 
 table_data = [['date', 'tag', 'content']]
