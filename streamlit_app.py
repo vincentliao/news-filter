@@ -22,7 +22,7 @@ def run_query(query):
 filter_text = st.text_input("Filter", "")
 
 sheet_url = st.secrets["private_gsheets_url"]
-rows = conn.execute(f'SELECT * FROM "{sheet_url}" WHERE tag like "%{filter_text}%"', headers=1)
+rows = conn.execute(f'SELECT * FROM "{sheet_url}" WHERE tag LIKE "%%{filter_text}%%"', headers=1)
 rows_all = rows.fetchall()
 
 table_data = [['date', 'tag', 'content']]
