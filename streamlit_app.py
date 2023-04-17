@@ -22,7 +22,7 @@ sheet_url = st.secrets["private_gsheets_url"]
 rows = conn.execute(f'SELECT * FROM "{sheet_url}"', headers=1)
 rows_all = rows.fetchall()
 
-table_data = list(['date', 'tag', 'content'])
+table_data = ['date', 'tag', 'content']
 
 for row in rows_all:
     table_data.append([row.date, row.tag, row.content])
