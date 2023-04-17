@@ -12,22 +12,15 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 conn = connect(credentials=credentials) 
 
-# Open the Google Sheet by name
-sheet_name = "俄烏戰爭表_精簡版 的副本"
-sheet = client.open(sheet_name).sheet1
+@st.cache_data(ttl=600)
+def run_query(query):
+    rows = conn.execute(query, headers=1)
+    rows = rows.fetchall()
+    return rows
 
-# Get all the values from the sheet
-all_values = sheet.get_all_values()
-headers = all_values[0]
+sheet_url = st.secrets["private_gsheets_url"]
+rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
-# Create a text input for filtering the data
-filter_text = st.text_input("Filter", "")
-
-# Filter the data based on the filter text
-filtered_values = [headers]  # start with headers
-for row in all_values[1:]:
-    if filter_text.lower() in " ".join(row).lower():  # case-insensitive search
-        filtered_values.append(row)
-
-# Display the values in a Streamlit table
-st.table(filtered_values)
+# Print results.
+for row in rows:
+    st.write(f"{row.name} has a :{row.pet}:")
