@@ -1,17 +1,15 @@
-import gspread
-from google.oauth2.service_account import Credentials
-import streamlit as st
+from google.oauth2 import service_account
+from gsheetsdb import connect
 
-
-scopes = [
-    'https://www.googleapis.com/auth/spreadsheets',
-    'https://www.googleapis.com/auth/drive'
-]
-
-creds = Credentials.from_service_account_file('key.json', scopes=scopes)
-
-# Authenticate with the Google Sheets API
-client = gspread.authorize(creds)
+# Create a connection object.
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"],
+    scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive"
+    ],
+)
+conn = connect(credentials=credentials) 
 
 # Open the Google Sheet by name
 sheet_name = "俄烏戰爭表_精簡版 的副本"
